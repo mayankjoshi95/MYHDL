@@ -1,4 +1,4 @@
-A hardware module (called a block in MyHDL terminology) is modeled as a function that returns generators.
+###A hardware module (called a block in MyHDL terminology) is modeled as a function that returns generators.
 This approach makes it straightforward to support features such as arbitrary hierarchy, named port association, arrays of instances, and conditional instantiation. 
 Furthermore, MyHDL provides classes that implement traditional hardware description concepts.
 It provides a signal class to support communication between generators, a class to support bit oriented operations, and a class for enumeration types.
@@ -18,3 +18,13 @@ The converter works on an instantiated design that has been fully elaborated. Co
 
 Finally, the converter automates a number of tasks that are hard in Verilog or VHDL directly. A notable feature is the automated handling of signed arithmetic issues.
 
+####YIELD STATEMENTS WORK AS GENERAL SENSITIVTY LISTS 
+@deco
+def func(arg1, arg2, ...):
+    <body>
+This code is equivalent to the following:
+
+def func(arg1, arg2, ...):
+    <body>
+func = deco(func)
+##Note that the decorator statement goes directly in front of the function declaration, and that the function name func is automatically reused for the final result.
