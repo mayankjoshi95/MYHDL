@@ -129,3 +129,177 @@ print(b.max)
 ##In some cases it can be useful to interpret intbv objects in terms of “signed” and “unsigned”. Basically, it depends on attribute min. 
 if min < 0, then the object is “signed”, otherwise it is “unsigned”. 
 ##In particular, the bit width of a “signed” object will account for a sign bit, but that of an “unsigned” will not, because that would be redundant. 
+
+
+
+##to connvert unsigned to signed we use intbv.signed
+
+a = intbv(12,min=0,max=16)
+bin(a)
+b=a.signed()
+print(int(b))
+-4
+
+
+As an example let’s take a 8 bit wide data bus that would be modeled as follows:
+###VERY IMPORTANT 
+data_bus = intbv(0)[8:]
+##Now consider that a complex number is transferred over this data bus. 
+##The upper 4 bits of the data bus are used for the real value and the lower 4 bits for the imaginary value. 
+##As real and imaginary values have a positive and negative value range, we can slice them off from the data bus and convert them as follows:
+
+##real.next = data_bus[8:4].signed()
+##imag.next = data_bus[4:].signed()
+
+
+
+
+##Structural Modeling
+
+##Module Instantiation annd hierarchy 
+
+##in myhdl instances are defined as being either the sequence of the instance or a gennerator .
+hierarchy is modeled by defining the instances in a high level fucntionand returning them 
+
+for example  
+from myhdl import block
+
+@block
+def top(...):
+    ...
+    instance_1 = module_1(...)
+    instance_2 = module_2(...)
+    ...
+    instance_n = module_n(...)
+    ...
+    return instance_1, instance_2, ... , instance_n
+
+##conditional instantitation 
+
+##instance if returned according to the parameter whicn=h satisfiies the specific conditon
+
+
+from myhdl import block
+
+SLOW, MEDIUM, FAST = range(3)
+
+@block
+def top(..., speed=SLOW):
+    ...
+    def slowAndSmall():
+       ...
+    ...
+    def fastAndLarge():
+       ...
+    if speed == SLOW:
+        return slowAndSmall()
+    elif speed == FAST:
+        return fastAndLarge()
+    else:
+        raise NotImplementedError
+
+
+
+##List of instance and the signal
+
+##cosnider a example of the top moodule which instatiate the single submodule 
+
+from myhdl import block, Signal
+
+@block
+def top(...):
+
+    din = Signal(0)
+    dout = Signal(0)
+    clk = Signal(bool(0))
+    reset = Signal(bool(0))
+
+    channel_inst = channel(dout, din, clk, reset)
+
+    return channel_inst
+
+
+
+##if we want to support for arbitrary number of channel 
+
+from myhdl import block ,Signal
+@block
+def top(....,n=8):
+  din=[Signal(0) for i in range(n)]
+  dout=[Signal(0) for i in range(n)]
+  clk=Signal(bool(0))
+  reset=Signal (bool(0))
+  channel_inst=[None for i in range(n)]
+  for i in range(n):
+   channel_inst[i]=channel(dout[i],din[i],clk,reset)
+  return channel_inst
+  
+  
+  
+  ##In myhdl a signal slice can't be used as the signal 
+  
+  ##we can address such cases by the method called shadow signal 
+  
+  
+  
+  ###A digital hardware system model
+  
+  1.execution block :- threads
+  2.the thing connecting them is called signal
+  
+  ##CHARACTERISTICS
+  
+  1. MASSSIVE AMOUNT OF CONCURRENT THREADS##COONCURRENCEY :-HAPPENIING AT THE SAME TIME 
+  2.COMMUNICATION THROUGH SIGNALS##2THEN ON THE SIGANL VALUE CAHNGES CAN OCCUR WHICH TRIGGER EVENT ON THE THREADS
+  3.ACTION TRIGGERED BY EVENT ON SIGNALS
+  4.DETERMINISTIC BY CONSTRUCTION
+  5.FINE GRAINED CONTROL OF DATA TYPE BIT WIDTHS
+  
+  
+  HDL MMUST SUPPORT THESE CHARACTESITIC
+  
+  
+  ##HDL is the event driven microthread programming language  with built in determinism  
+  #an HDL must also implement a hardware friendly type system
+  
+  
+  ##The design of myHDL 
+  ##our goal is to design a pyhton library that suport the following features 
+  1.microthreads
+  2.events that trigger actions
+  3.deterministic communication
+  4.hardware friendly type system 
+  
+  
+  
+  ##DETERMINISM IN AN HDL 
+  
+  TRICK IS TO HAVE SEPARATE PHASES FOR
+  1.VALUE UPDATE
+  2.COMPUTATION
+  
+  
+  ##that is the leaf object of the determinism
+  ##1st CLASS IN myhdl i.e important to know about is the SIGNAL CLASS 
+  SIGANL BUFFER THE VALUE 
+  s=Signal(0)
+  s.next=5##it indicate the next vaue of the signal is 5 ##HERE WE ASSIGN THE NEXT ATTRIBUTE TELLING THE NEXT VALUE OF THE SSIGNAL ISS SAY 5 HERE 
+  ##the updates itself is not done by the assigner but automatically by the simulator 
+  ##if all comunciation goes through signal then the model ahs to be deterministic and we don't have to worry about it anymore
+  
+  
+  
+  #EVENT 
+  signal can also be used to define events as we can have amicrothread which is waiting on the value change of the signal or certain trasition rising or -ve edge on a signal 
+  ##often there is the globally synchronizing edge tahtt what we call the clock edge
+  
+  ##other evvent also there waiting for the delay
+  
+  #
+  
+  
+  
+  
+  
+  
+  
