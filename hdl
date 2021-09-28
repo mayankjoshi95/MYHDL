@@ -68,6 +68,8 @@ inst=HelloWorld()#n MyHDL, we create an instance of a hardware block by calling 
 inst.run_sim(30)##to simulate the instance we use its run_sim method.we can use it to run the simulation for desired amount of 
 #timesteps .
 
-
-
+##intbv
+intbv([val=None] [, min=None]  [, max=None])
+#val is the initial value. min and max can be used to constrain the value. Following the Python conventions, min is inclusive, and max is exclusive. 
+#Therefore, the allowed value range is min .. max-1.
 
