@@ -397,14 +397,58 @@ def dff():
   ##list for random access memory(RAM)
  ##Tuple for read only memory(ROM)
  ##these  have the similar semantic meaning
- ##for the hardware module itself there 
+ ##for the hardware module itself there nothing special in myHDL hardware module is modeled by a function that returns the generators
+ ## To describe the hardware module a normal funcition is required the only difference is that it creates generators and it returns them
+ #TO MODEL HIERARCHY CALL ANOTHER FUCNTION AND NO SPECIAL FEATURE ARE NEEDED FOR THAT
+ ##THE HIERARCHY IS MODLED BY A "SUBMODULE CALL"
+  
+  
+  #MODELING HIERARCHY 
+  
+  def module(out1,...,in2,...clock,reset):##1.this thhe normal fucntion with some parameter list typically all signals 
+    sig1=Signal()#2.then we ahve internal signal
+    inst1=submodule(...)##3.here we ahve the submodule which is just another ffucnton call which is assigned to the variable it is called instantiiation in hardware design 
+    ##4.then we can have any number of additinal instatiation or decorator 
+    @always_seq(clock.posedge,reset=reset)
+    def gen1():
+    @always_comb():
+      def gen2():
+      return inst1,...gen1,...gen2#5. all these things are returned 
+  
+  
+  ##it creates a nested hierarchical list of the genreators
+  ##THIS IS THE BASIC DATA STRUCTURE OF HOW MYHDL DEALS WITH THE HARDWARE DESIGN AS A NESTED LIST OF THE GENERTORS 
   
   
   
+  ##HARDWARE FRIENDLY TYPE SYSTEM 
+  
+  ##BASED ON INTEGER ARTHIMETIC ##FOR EFFICCINCY REASIN THAT IS THE BASIS OF EVERYTHING 
+  ##ALSO THERE IS FINE GRAINED CONTROL OF BIT WIDTH,BECAUSE OF WE DONDOT WANT TO WASTE OUR SIZE, FOR EFFICIENCY 
   
   
+  ##
+  reg[2:0] a;
+  reg signed [3:0] b;
+  reg signed [4:0] c;
+  c<= a+b;
+  
+  ANSWER
+  7+-2=-11
   
   
+  THE VHDL ANSWER 
+  
+  signal a :unsigned (2 downto 0);
+  signal b :unsigned (3 downto 0);
+  signal c :unsigned (4 downto 0);
+  
+  c<=a+b
+   COMPILATION ERROR
+   
+   
+   
+   
   
   
   
