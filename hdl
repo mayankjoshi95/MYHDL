@@ -85,7 +85,7 @@ bin(a)
 
 ##bit indexing 
 from myhdl import bin
-a=intbv(24)
+a=intbv(24)##it gives us the hexadecimal number 
 bin(a)
 '11000'
 print(int(a[4]))
@@ -102,3 +102,30 @@ print(int(a[0]))
 ##notice that lower indices corresponds to les significant bit 
 
 
+
+##in case of bit slicing higher index is left off i.e the leftmost bit is not considered
+
+print(bin(a[4:1]))
+100
+
+
+print(bin(a[4:]))
+1000
+
+
+##When an intbv object is sliced, a new intbv object is returned.
+This new intbv object is always positive, and the value bounds are set up in accordance with the bit width specified by the slice.
+For example:
+
+b=a[4:]
+print(b.min)
+0
+print(b.max)
+16
+
+##sometimes hardware engineers prefer to constrain an object by defining its bit width directly, instead of the range of allowed values.
+
+
+##In some cases it can be useful to interpret intbv objects in terms of “signed” and “unsigned”. Basically, it depends on attribute min. 
+if min < 0, then the object is “signed”, otherwise it is “unsigned”. 
+##In particular, the bit width of a “signed” object will account for a sign bit, but that of an “unsigned” will not, because that would be redundant. 
