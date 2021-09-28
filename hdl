@@ -72,4 +72,33 @@ inst.run_sim(30)##to simulate the instance we use its run_sim method.we can use 
 intbv([val=None] [, min=None]  [, max=None])
 #val is the initial value. min and max can be used to constrain the value. Following the Python conventions, min is inclusive, and max is exclusive. 
 #Therefore, the allowed value range is min .. max-1.
+Python function len can be used to determine the bit width.
+len(a)
+
+
+##We use the bin function provide by MyHDL because it shows the two’s complement representation for negative values.
+
+from myhdl import bin
+a=intbv(24)
+bin(a)
+'11000'
+
+##bit indexing 
+from myhdl import bin
+a=intbv(24)
+bin(a)
+'11000'
+print(int(a[4]))
+print(int(a[3]))
+print(int(a[2]))
+print(int(a[1]))
+print(int(a[0]))
+1
+1
+0
+0
+0
+
+##notice that lower indices corresponds to les significant bit 
+
 
