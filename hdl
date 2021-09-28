@@ -279,6 +279,7 @@ def top(....,n=8):
   2.COMPUTATION
   
   
+  
   ##that is the leaf object of the determinism
   ##1st CLASS IN myhdl i.e important to know about is the SIGNAL CLASS 
   SIGANL BUFFER THE VALUE 
@@ -295,7 +296,112 @@ def top(....,n=8):
   
   ##other evvent also there waiting for the delay
   
-  #
+  #MICRO THREADS
+  
+  1. WE NEED MASSIVE CONCURRENCY 
+  2.THE THREADS SHOULD BE SUPER LIGHT WEIGHT 
+  3.AS LIGHT WEIGHT AS FUNCTION
+  
+  
+  ##IN MYHDL THE MICROTHREADS ARE IMPLEMENTED BY THE GENERATOR FUNCTION AND GENERATOR 
+  
+  
+  
+  ##GENERATORSS ARE KEY BUILDING BLOCK OFF MYHDL MODEL 
+  IN myHDL you yield number of signal what that means is you wait untill value changes on these signals thats how we implement waiting on these event 
+  ##z ,a,b,sel are signal object (outer scope)
+def mux():
+    while True:#loop forever
+        yield a,b,sel#wait on a value change 
+        if sel:
+            z.next=a
+        else:
+            z.next=b
+ ##this is agenerator fucntion and a generator is make by calling such a funciton
+##but that would be little bit overhead to having to do that all the time THUS WE USE IN MYHDL DECORATORS THAT MAKE IT EASIER TO CREATE GENERATORS
+##a decorator is infact a way to modify the behaviour of the function that follows
+
+#@instance decorator creates a  generator from the generator funciton
+##@instance what it do it it calls the generator function and assign it to the same name.
+
+@instance ##it is equivalent to mux=mux()  THUS WE REUSE THE NAME OOF THHE FUNCTION AS THE GENERATOR ITSELF 
+def mux():
+    while True:#loop forever
+        yield a,b,sel#wait on a value change 
+        if sel:
+            z.next=a
+        else:
+            z.next=b
+            
+            
+##@instance ##it is equivalent to mux=mux()  THUS WE REUSE THE NAME OOF THHE FUNCTION AS THE GENERATOR ITSELF 
+
+def mux():
+    while True:##now this is so common we define instead of this a decorator 
+        yield a,b,sel#wait on a value change 
+        if sel:
+            z.next=a
+        else:
+            z.next=b
+#@always decorator abstracts an outer "while true"loop followed by "yield" statement             
+@always(a,b,sel) ##meaning of all this is whenever one of these input changes thsi fucntion will be called 
+def mux():
+     
+        if sel:
+            z.next=a
+        else:
+            z.next=b     
+            
+#Combinatorial logic:@always_comb
+##since it is very common that fucntion will be sensitive to all its inputs 
+##here we use @always_comb decorator that automaticaly infers which signal are input  here and automatically make the fucntion 
+##sensitive to those changes 
+
+
+@always_comb
+def mux():
+    if sel:
+        z.next=a
+    else:
+        z.next=b
+        
+##Sequential logic:@always_seq
+##@always_seq this is the decorator that automatically infers the reset fucntionality 
+##here when we have the reset signal and you use this decorator then the hardware reset signal will automatically be called just because this decorator ifers all this behaviour
+@always(clock.posedge,reset.negedge)
+   def dff():
+        if reset==0:
+            q.next=0#initial value  of q
+        else:
+            q.next=d
+##instead of this we can write
+#if reset==0:
+ #           q.next=0#initial value  of q
+  #      else:
+reset=ResetSignal(0,active=0,async=True)
+@always_seq(clock.posedge,reset=reset)
+def dff():
+    q.next=d
+    
+##DECORATORS ARE MAIN TOOL TO CREATE A DOMAIN -SPECIFIC LANGUAGE
+#@instance:-most general,multiple yield,statements
+#@always:-single yield statement,abstract"while True"Loop
+#@always_comb:-automaticaly infers combanitorial sensitivity 
+#@always_seq:-automatically infers the reset fucntionality for sequential logic 
+##A UNIQUE FEATURE OF THE MYHDL
+
+  ##MyHDL is minimalistic design
+  
+  ##here only features that are neccessary are implemented 
+  ##here we used native python features as much as possible 
+  ##list for random access memory(RAM)
+ ##Tuple for read only memory(ROM)
+ ##these  have the similar semantic meaning
+ ##for the hardware module itself there 
+  
+  
+  
+  
   
   
   
