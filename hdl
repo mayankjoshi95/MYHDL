@@ -449,7 +449,108 @@ def dff():
    
    
    
-  
-  
-  
-  
+##THE PROBLEM WITH INTEGER ARTHIMETIC IN VERILOG AND VHDL IS 
+#1.THEY BOTH USE LOWER LEVEL TYPES I.E THE NON ABSTRACT TYPES:
+#SIGNED OR UNSIGNED 
+#IN BOTH CASES MIXING THOSE EXPRESSION IS PROBLEMATIC
+3.VERILOG CASTS EVERYHTING TO UNSIGNED
+4.VHDL STORNG TYPING DOESNOT WORK WELL WITH THESE KIND OF LOW LEVEL TYPES  
+
+
+
+INTEGER ARITHMETIC  IN MYHDL 
+
+#THE  PYHTON WAY WAS THE GOOD OLD INTEEGER 
+##BUT IN MYHDL THERE IS A SPECIAL CLASS CALLED intbv where we can also constraints the value of the integer to  the range.
+##intbv is theinteger class with bit vector capablities
+a=intbv(0,min=0,max=-8)
+b=intbv(0,min=-8,max=-8)
+##infact such range gives you the free assertions i.e it tells you where the error is 
+##in the same time these bounds can be used to specify what bitwidth you need 
+
+##also to access the bits we need slicing and indexing interface to access the bits 
+z.next=a[2:0]
+
+
+SIDENOTE SYNTHESIS
+1.A Synthesis tool is the compiler 
+2.it compiles an HDL hardware  model into  agate level implementation
+3..synthesis is very secific in a way that you have to write your HDL in a specific way for it to be passed through the synthesizer i.e fairly lw level and that level is  
+
+ ##conversion connecting to standard design flow 
+ 1.a subset of myhdl can be automatically converted to verilog /VHDL 
+ 2.converter maintains the abstraction level 
+ 3.however it support some unique myHDL  feature and automates some tedious tasks
+ 4.creates readable VHDL/Verilog that integrates seamlessly  in the design flow 
+ 5.the convertible subset ismuch broader than the synthesizable subset 
+ 
+ 
+ 
+ ##myHDL verification  is by far the hardest task in the hardware design 
+ ##with myHDL hardware verificaiton engineer benefit from pyhton expressive power and ecosystem 
+ ##TTD TEST DRIVEN DESIGN FOR HARDWARE 
+ ##THE FOUNDATION IS AN EVENT DRIVEN SIMULATOR PROVIDED BY MYHDL 
+ ##WITH MYHDL FOR HARDDWARE VERIFIFCATION YOU HAVE NO LIMIT AT ALL YOU CAN USE ANY TRICK IN THE PYTHON BOOK TO BUILD YOUR VERIFICATION ENVIRONMENT 
+ 
+ 
+ ##myhdl simulator 
+ 
+ 1.input is hierarchical list of generators,that communicate through these signal. 
+ 2.the simulator of data signal values based on those values it check which generators becomes active 
+ 3.then it run these generator in any order 
+ 
+ SIMULATION DEBUGGING 
+ 
+ 1.CLASSICAL PYTHON DEBUGGING
+ 2.WAVEFORM VIEWER OUTPUT 
+ 
+ PYPY AND MYHDL THE DREAM TEAM 
+ 
+ #it is diffeerent python interpreter
+ #it has JIT(just in time ) technology so it speeds up your running program 
+ ##bench mark simulation runs 8 -20 time 
+ 
+ 
+ ##COMPUTER ORGANIZATION
+ 
+ 1.CPU
+2.MEMORY HIERARCHY(PHYSICAL MEMORY (RAM),CACHE 1.LEVEL1,2.LEVEL2,3.LEVEL3)
+IO(VIRTUAL MEMORY) ,CPU(REGISTERS)
+3.IO SYSTEM
+
+CPU  has
+1.pipelining
+2.hyperthreading
+3.multi core
+4.complex io
+
+CPU has this ALU 
+Now hardware 
+1.fetch instruction
+2.load 
+3.execute (here we present data and instruciton to the alu)
+4.store data 
+
+
+##NOW how the programmable hardware iss different 
+
+##FOR CPU side we are going to use more time and less logic and more memory
+
+
+
+##SPACE 
+sum of product in hardware 
+we put many multiplier and many addders we have limits on resources 
+
+#so programmable hardware is usually for digtial programmable hardware and field progemmable gate array
+
+##here we have the programmablelogic block that we can program in this block and we can program routing i.e whats connected to what it means that we can take the multiplier route it
+##to the adder and then to the multiplier 
+##space more logic less time
+
+###ports are going to be signal and parameter will tell how our signal is going to work 
+
+
+##UART serial communication protocol 
+UNIVERSAL ASYNCHRONOUS RECEIVER /TRANSMITTER
+
