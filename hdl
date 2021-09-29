@@ -554,3 +554,11 @@ we put many multiplier and many addders we have limits on resources
 ##UART serial communication protocol 
 UNIVERSAL ASYNCHRONOUS RECEIVER /TRANSMITTER
 
+nowadays instead of this serial communication we use ethernet or usb cable
+
+##myhdlpeek lets you monitor signals in a MyHDL or nMigen digital system simulation and display them as waveforms or as tables in a Jupyter notebook.
+
+##myhdlpeek implements a Peeker object that monitors a signal and records the time and value when it changes. 
+##You can also select which signals are shown, set the beginning and ending times of the display, 
+##find portions of the waveforms where user-specified triggers occur, and much more.
+
